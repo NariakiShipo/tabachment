@@ -68,8 +68,11 @@ async function openAttachment(message, sender) {
 
 /**
  * Adds the tab's display rules, then loads Gmail's download URL in the tab.
- * Only those rules can turn the response into inline display; if they cannot
- * be added, the load is an ordinary Gmail download (fail closed). The
+ * Only these rules can turn the response into inline display, and only for
+ * passive types. If adding them fails, the load is an ordinary Gmail download,
+ * unless the tab still has the rules from an earlier load: those were built
+ * for this same attachment (the tab's stored record) and apply the same type
+ * checks. Either way nothing is displayed unchecked (fail closed). The
  * navigation is browser-initiated, so Gmail sees it exactly like a URL typed
  * into the address bar.
  */
