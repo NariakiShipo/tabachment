@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="optionsTitle">Tabachment settings</title>
+    <link rel="icon" href="/icons/icon32.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="options">
+    <main class="page">
+      <header class="masthead">
+        <img src="/icons/icon128.png" alt="" width="64" height="64" />
+        <div>
+          <h1>Tabachment</h1>
+          <p data-i18n="extDescription"></p>
+        </div>
+      </header>
+
+      <section class="group" aria-labelledby="behavior-heading">
+        <h2 id="behavior-heading" data-i18n="optionsBehavior">When you click an attachment</h2>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="optInterceptClicks">Open it in a new tab</span>
+            <span class="hint" data-i18n="optInterceptClicksHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-setting="interceptClicks" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="optOpenInBackground">Open in the background</span>
+            <span class="hint" data-i18n="optOpenInBackgroundHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-setting="openInBackground" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="optShowButton">Show a “New tab” button on attachments</span>
+            <span class="hint" data-i18n="optShowButtonHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-setting="showButton" />
+        </label>
+      </section>
+
+      <section class="group" aria-labelledby="kinds-heading">
+        <h2 id="kinds-heading" data-i18n="optionsKinds">File types</h2>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="kindPdf">PDF documents</span>
+            <span class="hint">.pdf</span>
+          </span>
+          <input type="checkbox" class="switch" data-kind="pdf" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="kindImage">Images</span>
+            <span class="hint" data-i18n="kindImageHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-kind="image" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="kindText">Text files</span>
+            <span class="hint" data-i18n="kindTextHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-kind="text" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="kindVideo">Video</span>
+            <span class="hint" data-i18n="kindVideoHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-kind="video" />
+        </label>
+        <label class="row">
+          <span class="text">
+            <span class="title" data-i18n="kindAudio">Audio</span>
+            <span class="hint" data-i18n="kindAudioHint"></span>
+          </span>
+          <input type="checkbox" class="switch" data-kind="audio" />
+        </label>
+        <p class="note" data-i18n="kindOtherNote"></p>
+      </section>
+
+      <section class="group" aria-labelledby="tips-heading">
+        <h2 id="tips-heading" data-i18n="optionsTips">Tips</h2>
+        <ul class="tips">
+          <li data-i18n="tipAltClick"></li>
+          <li data-i18n="tipCtrlClick"></li>
+          <li data-i18n="tipPdfDownload"></li>
+        </ul>
+      </section>
+
+      <footer class="footer">
+        <span data-i18n="privacyNote"></span>
+        <span>v<span id="version"></span></span>
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="../shared/attachments.js"></script>
+    <script src="i18n.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

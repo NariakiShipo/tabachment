@@ -1,0 +1,101 @@
+{
+  "extName": {
+    "message": "Tabachment－在新分頁開啟 Gmail 附件"
+  },
+  "extDescription": {
+    "message": "在 Gmail 點一下 PDF、圖片、文字、影片或音訊附件，就直接在新分頁開啟：不跳出預覽視窗，也不用下載。"
+  },
+  "actionTitle": {
+    "message": "Tabachment 設定"
+  },
+  "cardButtonLabel": {
+    "message": "新分頁"
+  },
+  "cardButtonTitle": {
+    "message": "在新分頁開啟"
+  },
+  "openingStatus": {
+    "message": "正在此分頁開啟…"
+  },
+  "openingHint": {
+    "message": "如果檔案沒有出現，可能已改為下載。請查看瀏覽器的下載項目，或重新開啟。"
+  },
+  "openingReopen": {
+    "message": "重新開啟"
+  },
+  "optionsTitle": {
+    "message": "Tabachment 設定"
+  },
+  "optionsBehavior": {
+    "message": "點擊附件時"
+  },
+  "optInterceptClicks": {
+    "message": "在新分頁開啟"
+  },
+  "optInterceptClicksHint": {
+    "message": "支援的檔案會在新分頁開啟，而不是 Gmail 的預覽視窗；其他檔案維持 Gmail 原本的行為。"
+  },
+  "optOpenInBackground": {
+    "message": "在背景開啟"
+  },
+  "optOpenInBackgroundHint": {
+    "message": "停留在 Gmail，檔案會在旁邊的分頁開啟。"
+  },
+  "optShowButton": {
+    "message": "在附件上顯示「新分頁」按鈕"
+  },
+  "optShowButtonHint": {
+    "message": "滑鼠移到附件上時出現；即使關閉「在新分頁開啟」也能使用。"
+  },
+  "optionsKinds": {
+    "message": "檔案類型"
+  },
+  "kindPdf": {
+    "message": "PDF 文件"
+  },
+  "kindImage": {
+    "message": "圖片"
+  },
+  "kindImageHint": {
+    "message": "PNG、JPG、GIF、WebP、BMP、ICO、AVIF"
+  },
+  "kindText": {
+    "message": "文字檔"
+  },
+  "kindTextHint": {
+    "message": "TXT、CSV、JSON、Markdown、XML、記錄檔與程式碼"
+  },
+  "kindVideo": {
+    "message": "影片"
+  },
+  "kindVideoHint": {
+    "message": "MP4、WebM、MOV、OGV"
+  },
+  "kindAudio": {
+    "message": "音訊"
+  },
+  "kindAudioHint": {
+    "message": "MP3、M4A、WAV、OGG、FLAC、AAC"
+  },
+  "kindOtherNote": {
+    "message": "其他檔案（Word、Excel、PowerPoint、ZIP、HTML 等）維持使用 Gmail 的預覽。"
+  },
+  "optionsTips": {
+    "message": "小技巧"
+  },
+  "tipAltClick": {
+    "message": "按住 Alt（Mac 為 Option）再點擊附件，可以使用 Gmail 原本的預覽。"
+  },
+  "tipCtrlClick": {
+    "message": "按住 Ctrl（Mac 為 ⌘）點擊，或用滑鼠中鍵點擊，會在背景分頁開啟檔案。"
+  },
+  "tipPdfDownload": {
+    "message": "如果 PDF 仍然被下載，請到 Chrome「設定 › 隱私權和安全性 › 網站設定 › 其他內容設定 › PDF 文件」，選擇「在 Chrome 中開啟 PDF 檔案」。"
+  },
+  "privacyNote": {
+    "message": "Tabachment 完全在你的瀏覽器中運作，不收集任何資料。"
+  },
+  "savedStatus": {
+    "message": "已儲存"
+  }
+}

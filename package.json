@@ -1,0 +1,21 @@
+{
+  "name": "tabachment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension that opens Gmail attachments (PDF, images, text, audio, video) directly in a new tab.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"test/unit/**/*.test.mjs\"",
+    "test:e2e": "node --test --test-concurrency=1 \"test/e2e/**/*.test.mjs\"",
+    "build": "node scripts/build.mjs",
+    "assets": "node scripts/render-assets.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/noto-sans-tc": "^5.3.0",
+    "playwright": "1.56.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

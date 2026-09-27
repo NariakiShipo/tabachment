@@ -1,0 +1,101 @@
+{
+  "extName": {
+    "message": "Tabachment – Gmail の添付ファイルを新しいタブで開く"
+  },
+  "extDescription": {
+    "message": "Gmail で PDF・画像・テキスト・動画・音声の添付ファイルをクリックすると、プレビューもダウンロードもなしに新しいタブで直接開きます。"
+  },
+  "actionTitle": {
+    "message": "Tabachment の設定"
+  },
+  "cardButtonLabel": {
+    "message": "新しいタブ"
+  },
+  "cardButtonTitle": {
+    "message": "新しいタブで開く"
+  },
+  "openingStatus": {
+    "message": "このタブで開いています…"
+  },
+  "openingHint": {
+    "message": "ファイルが表示されない場合は、代わりにダウンロードされた可能性があります。ダウンロードを確認するか、もう一度開いてください。"
+  },
+  "openingReopen": {
+    "message": "もう一度開く"
+  },
+  "optionsTitle": {
+    "message": "Tabachment の設定"
+  },
+  "optionsBehavior": {
+    "message": "添付ファイルをクリックしたとき"
+  },
+  "optInterceptClicks": {
+    "message": "新しいタブで開く"
+  },
+  "optInterceptClicksHint": {
+    "message": "対応ファイルは Gmail のプレビューではなく新しいタブで開きます。その他のファイルは Gmail の通常の動作のままです。"
+  },
+  "optOpenInBackground": {
+    "message": "バックグラウンドで開く"
+  },
+  "optOpenInBackgroundHint": {
+    "message": "Gmail を表示したまま、隣のタブでファイルを開きます。"
+  },
+  "optShowButton": {
+    "message": "添付ファイルに「新しいタブ」ボタンを表示"
+  },
+  "optShowButtonHint": {
+    "message": "添付ファイルにポインタを合わせると表示されます。「新しいタブで開く」がオフでも使えます。"
+  },
+  "optionsKinds": {
+    "message": "ファイルの種類"
+  },
+  "kindPdf": {
+    "message": "PDF ドキュメント"
+  },
+  "kindImage": {
+    "message": "画像"
+  },
+  "kindImageHint": {
+    "message": "PNG、JPG、GIF、WebP、BMP、ICO、AVIF"
+  },
+  "kindText": {
+    "message": "テキストファイル"
+  },
+  "kindTextHint": {
+    "message": "TXT、CSV、JSON、Markdown、XML、ログ、ソースコード"
+  },
+  "kindVideo": {
+    "message": "動画"
+  },
+  "kindVideoHint": {
+    "message": "MP4、WebM、MOV、OGV"
+  },
+  "kindAudio": {
+    "message": "音声"
+  },
+  "kindAudioHint": {
+    "message": "MP3、M4A、WAV、OGG、FLAC、AAC"
+  },
+  "kindOtherNote": {
+    "message": "その他のファイル（Word、Excel、PowerPoint、ZIP、HTML など）は Gmail のプレビューのままです。"
+  },
+  "optionsTips": {
+    "message": "ヒント"
+  },
+  "tipAltClick": {
+    "message": "Alt キー（Mac では Option キー）を押しながらクリックすると、Gmail のプレビューを使えます。"
+  },
+  "tipCtrlClick": {
+    "message": "Ctrl キー（Mac では ⌘ キー）を押しながらクリックするか中クリックすると、バックグラウンドのタブで開きます。"
+  },
+  "tipPdfDownload": {
+    "message": "PDF がダウンロードされてしまう場合は、Chrome の「設定 › プライバシーとセキュリティ › サイトの設定 › その他のコンテンツの設定 › PDF ドキュメント」で「PDF を Chrome で開く」を選んでください。"
+  },
+  "privacyNote": {
+    "message": "Tabachment はブラウザ内だけで動作し、データを一切収集しません。"
+  },
+  "savedStatus": {
+    "message": "保存しました"
+  }
+}

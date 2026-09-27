@@ -1,0 +1,134 @@
+{
+  "extName": {
+    "message": "Tabachment – Gmail attachments in a new tab",
+    "description": "Extension name shown in Chrome and the Chrome Web Store (max 75 characters)."
+  },
+  "extDescription": {
+    "message": "Click a PDF, image, text, video or audio attachment in Gmail and it opens right in a new tab: no preview pop-up, no download.",
+    "description": "Extension summary shown in Chrome and the Chrome Web Store (max 132 characters)."
+  },
+  "actionTitle": {
+    "message": "Tabachment settings",
+    "description": "Tooltip of the toolbar button."
+  },
+  "cardButtonLabel": {
+    "message": "New tab",
+    "description": "Short label of the button shown on Gmail attachment cards."
+  },
+  "cardButtonTitle": {
+    "message": "Open in a new tab",
+    "description": "Tooltip of the button shown on Gmail attachment cards."
+  },
+  "openingStatus": {
+    "message": "Opening in this tab…",
+    "description": "Shown in the new tab while the attachment loads."
+  },
+  "openingHint": {
+    "message": "If the file did not appear, it may have been downloaded instead. Check your downloads, or open it again.",
+    "description": "Shown in the new tab if the attachment did not replace the placeholder page."
+  },
+  "openingReopen": {
+    "message": "Open again",
+    "description": "Button that loads the attachment in the tab again."
+  },
+  "optionsTitle": {
+    "message": "Tabachment settings",
+    "description": "Title of the options page."
+  },
+  "optionsBehavior": {
+    "message": "When you click an attachment",
+    "description": "Heading of the behavior settings."
+  },
+  "optInterceptClicks": {
+    "message": "Open it in a new tab",
+    "description": "Setting: clicking a supported attachment opens it in a new tab."
+  },
+  "optInterceptClicksHint": {
+    "message": "Supported files open in a new tab instead of Gmail's preview. Other files keep Gmail's usual behavior.",
+    "description": "Explanation of the setting above."
+  },
+  "optOpenInBackground": {
+    "message": "Open in the background",
+    "description": "Setting: open the new tab without switching to it."
+  },
+  "optOpenInBackgroundHint": {
+    "message": "Stay in Gmail; the file opens in the tab next to it.",
+    "description": "Explanation of the setting above."
+  },
+  "optShowButton": {
+    "message": "Show a “New tab” button on attachments",
+    "description": "Setting: show the button on attachment cards."
+  },
+  "optShowButtonHint": {
+    "message": "Appears when you point at an attachment, and works even when “Open it in a new tab” is off.",
+    "description": "Explanation of the setting above."
+  },
+  "optionsKinds": {
+    "message": "File types",
+    "description": "Heading of the file type settings."
+  },
+  "kindPdf": {
+    "message": "PDF documents",
+    "description": "File type setting."
+  },
+  "kindImage": {
+    "message": "Images",
+    "description": "File type setting."
+  },
+  "kindImageHint": {
+    "message": "PNG, JPG, GIF, WebP, BMP, ICO, AVIF",
+    "description": "Formats covered by the image setting."
+  },
+  "kindText": {
+    "message": "Text files",
+    "description": "File type setting."
+  },
+  "kindTextHint": {
+    "message": "TXT, CSV, JSON, Markdown, XML, logs and source code",
+    "description": "Formats covered by the text setting."
+  },
+  "kindVideo": {
+    "message": "Video",
+    "description": "File type setting."
+  },
+  "kindVideoHint": {
+    "message": "MP4, WebM, MOV, OGV",
+    "description": "Formats covered by the video setting."
+  },
+  "kindAudio": {
+    "message": "Audio",
+    "description": "File type setting."
+  },
+  "kindAudioHint": {
+    "message": "MP3, M4A, WAV, OGG, FLAC, AAC",
+    "description": "Formats covered by the audio setting."
+  },
+  "kindOtherNote": {
+    "message": "Other files (Word, Excel, PowerPoint, ZIP, HTML, …) keep Gmail's own preview.",
+    "description": "Note below the file type settings."
+  },
+  "optionsTips": {
+    "message": "Tips",
+    "description": "Heading of the tips section."
+  },
+  "tipAltClick": {
+    "message": "Hold Alt (Option on a Mac) while clicking to use Gmail's own preview.",
+    "description": "Tip."
+  },
+  "tipCtrlClick": {
+    "message": "Ctrl-click (⌘-click on a Mac) or middle-click opens the file in a background tab.",
+    "description": "Tip."
+  },
+  "tipPdfDownload": {
+    "message": "If PDFs are still downloaded, go to Chrome Settings › Privacy and security › Site settings › Additional content settings › PDF documents and choose “Open PDFs in Chrome”.",
+    "description": "Tip about Chrome's PDF setting."
+  },
+  "privacyNote": {
+    "message": "Tabachment runs entirely in your browser and collects no data.",
+    "description": "Privacy statement in the options page footer."
+  },
+  "savedStatus": {
+    "message": "Saved",
+    "description": "Confirmation after a setting changes."
+  }
+}
