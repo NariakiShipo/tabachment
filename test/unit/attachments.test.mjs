@@ -61,23 +61,46 @@ describe('isGmailAttachmentUrl', () => {
   });
 });
 
-describe('toInlineUrl', () => {
-  test('switches disp to inline and leaves the rest of the URL untouched', () => {
-    assert.equal(T.toInlineUrl(ATTACHMENT_URL), ATTACHMENT_URL.replace('disp=safe', 'disp=inline'));
+describe('toDownloadUrl', () => {
+  const INLINE_URL = ATTACHMENT_URL.replace('disp=safe', 'disp=inline');
+
+  test("turns Gmail's inline link into its download URL and leaves the rest untouched", () => {
+    assert.equal(T.toDownloadUrl(INLINE_URL), ATTACHMENT_URL);
+    assert.equal(T.toDownloadUrl(ATTACHMENT_URL), ATTACHMENT_URL);
   });
 
-  test('adds disp=inline when missing', () => {
+  test('adds disp=safe when missing', () => {
     assert.equal(
-      T.toInlineUrl('https://mail.google.com/mail/?ui=2&attid=0.1&view=att&zw'),
-      'https://mail.google.com/mail/?ui=2&attid=0.1&view=att&zw&disp=inline',
+      T.toDownloadUrl('https://mail.google.com/mail/?ui=2&attid=0.1&view=att&zw'),
+      'https://mail.google.com/mail/?ui=2&attid=0.1&view=att&zw&disp=safe',
     );
-    assert.equal(T.toInlineUrl('https://mail.google.com/mail/#x'), 'https://mail.google.com/mail/?disp=inline#x');
+    assert.equal(T.toDownloadUrl('https://mail.google.com/mail/#x'), 'https://mail.google.com/mail/?disp=safe#x');
   });
 
   test('does not touch parameters that merely end in "disp"', () => {
     assert.equal(
-      T.toInlineUrl('https://mail.google.com/mail/?xdisp=1&view=att&attid=0.1'),
-      'https://mail.google.com/mail/?xdisp=1&view=att&attid=0.1&disp=inline',
+      T.toDownloadUrl('https://mail.google.com/mail/?xdisp=1&view=att&attid=0.1'),
+      'https://mail.google.com/mail/?xdisp=1&view=att&attid=0.1&disp=safe',
+    );
+  });
+
+  test('leaves exactly one disp, whatever spelling the input used', () => {
+    const base = 'https://mail.google.com/mail/u/0/?view=att&attid=0.1';
+    for (const [input, expected] of [
+      [`${base}&%64isp=inline&zw`, `${base}&disp=safe&zw`],
+      [`${base}&disp=inline&permmsgid=msg-f:1&disp=inline&zw`, `${base}&disp=safe&permmsgid=msg-f:1&zw`],
+      [`${base}&d%69sp=inline&disp=safe&zw`, `${base}&disp=safe&zw`],
+    ]) {
+      const output = T.toDownloadUrl(input);
+      assert.equal(output, expected, input);
+      assert.deepEqual(new URL(output).searchParams.getAll('disp'), ['safe'], input);
+    }
+  });
+
+  test('only edits the query, never the fragment', () => {
+    assert.equal(
+      T.toDownloadUrl('https://mail.google.com/mail/u/0/?view=att&attid=0.1#x?disp=inline'),
+      'https://mail.google.com/mail/u/0/?view=att&attid=0.1&disp=safe#x?disp=inline',
     );
   });
 });
@@ -288,13 +311,13 @@ describe('validateOpenRequest', () => {
   test('returns the attachment to open', () => {
     assert.deepEqual(
       T.validateOpenRequest({ url: ATTACHMENT_URL, filename: ' report 報告.pdf ', declaredMime: 'application/pdf' }),
-      {
-        url: ATTACHMENT_URL.replace('disp=safe', 'disp=inline'),
-        filename: 'report 報告.pdf',
-        kind: 'pdf',
-        mime: 'application/pdf',
-      },
+      { url: ATTACHMENT_URL, filename: 'report 報告.pdf', kind: 'pdf', mime: 'application/pdf' },
     );
+  });
+
+  test("always opens Gmail's download URL, never asks Gmail for inline display", () => {
+    const inline = ATTACHMENT_URL.replace('disp=safe', 'disp=inline');
+    assert.equal(T.validateOpenRequest({ url: inline, filename: 'report.pdf' }).url, ATTACHMENT_URL);
   });
 
   test('rejects anything that is not a supported Gmail attachment', () => {

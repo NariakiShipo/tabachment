@@ -199,17 +199,44 @@
   }
 
   /**
-   * Asks Gmail for inline display (disp=inline) instead of a download (disp=safe).
-   * Edits the string rather than using URLSearchParams, which would re-encode
-   * the rest of Gmail's query (e.g. "&zw" -> "&zw=").
+   * Returns Gmail's download URL for an attachment (disp=safe; Gmail's own card
+   * links use disp=inline). Tabachment always loads this URL, never asks Gmail
+   * for inline display: only its type-checked rules may turn the response into
+   * inline display, so anything they reject (or any failure) stays a download.
+   * The query ends up with exactly one disp parameter, whatever spelling the
+   * input used ("%64isp", repeats); the fragment and every other parameter are
+   * kept byte for byte (URLSearchParams would re-encode Gmail's query, e.g.
+   * "&zw" -> "&zw=").
    */
-  function toInlineUrl(value) {
+  function toDownloadUrl(value) {
     if (typeof value !== 'string') return value;
-    if (/[?&]disp=[^&#]*/.test(value)) return value.replace(/([?&])disp=[^&#]*/g, '$1disp=inline');
     const hash = value.indexOf('#');
-    const base = hash === -1 ? value : value.slice(0, hash);
+    const beforeHash = hash === -1 ? value : value.slice(0, hash);
     const fragment = hash === -1 ? '' : value.slice(hash);
-    return base + (base.includes('?') ? '&' : '?') + 'disp=inline' + fragment;
+    const question = beforeHash.indexOf('?');
+    const base = question === -1 ? beforeHash : beforeHash.slice(0, question);
+    const query = question === -1 ? '' : beforeHash.slice(question + 1);
+
+    const params = [];
+    let replaced = false;
+    for (const param of query ? query.split('&') : []) {
+      if (paramName(param) !== 'disp') params.push(param);
+      else if (!replaced) {
+        params.push('disp=safe');
+        replaced = true;
+      }
+    }
+    if (!replaced) params.push('disp=safe');
+    return `${base}?${params.join('&')}${fragment}`;
+  }
+
+  function paramName(param) {
+    const name = param.split('=')[0].replace(/\+/g, ' ');
+    try {
+      return decodeURIComponent(name);
+    } catch {
+      return name;
+    }
   }
 
   /** Cleans a file name read from page text, e.g. "notes.txt (12 K)" -> "notes.txt". */
@@ -317,7 +344,7 @@
     const name = cleanFilename(filename);
     const type = classify(name, declaredMime);
     if (!type) throw new Error('Unsupported file type');
-    return { url: toInlineUrl(url), filename: name, kind: type.kind, mime: type.mime };
+    return { url: toDownloadUrl(url), filename: name, kind: type.kind, mime: type.mime };
   }
 
   function normalizeSettings(raw) {
@@ -342,7 +369,7 @@
     classify,
     parseDownloadUrl,
     isGmailAttachmentUrl,
-    toInlineUrl,
+    toDownloadUrl,
     cleanFilename,
     contentDisposition,
     buildTabRules,

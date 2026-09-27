@@ -6,7 +6,7 @@
  * Like Gmail, it serves an inbox page with attachment cards, answers
  * attachment URLs with a redirect to the attachment host, and serves files
  * there with "Content-Disposition: attachment" (which makes Chrome download
- * them unless Tabachment steps in).
+ * them unless Tabachment steps in), or "inline" when asked with disp=inline.
  */
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -146,9 +146,12 @@ export async function startFakeGmail() {
     }
     const file = host === 'mail-attachment.googleusercontent.com' && FILES[url.searchParams.get('realattid')];
     if (file && url.pathname.startsWith('/attachment/')) {
+      // Worst case for safety: whatever asks for inline display (disp=inline)
+      // gets it, even HTML. Tabachment must therefore never ask for it.
+      const disposition = url.searchParams.get('disp') === 'inline' ? 'inline' : 'attachment';
       res.writeHead(200, {
         'content-type': file.type,
-        'content-disposition': `attachment; filename="${file.name.replace(/[^\x20-\x7e]/g, '_')}"; filename*=UTF-8''${encodeURIComponent(file.name)}`,
+        'content-disposition': `${disposition}; filename="${file.name.replace(/[^\x20-\x7e]/g, '_')}"; filename*=UTF-8''${encodeURIComponent(file.name)}`,
         'x-content-type-options': 'nosniff',
         'cache-control': 'private, max-age=0',
         ...file.headers,

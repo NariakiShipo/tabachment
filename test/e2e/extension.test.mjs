@@ -241,6 +241,34 @@ describe('Tabachment in Chromium', { skip: !hasOpenSsl() && 'openssl is needed t
     for (const page of context.pages()) assert.notEqual(await page.title(), 'PWNED');
   });
 
+  test('if the display rules cannot be added, the file downloads instead (fail closed)', async () => {
+    await worker.evaluate(() => {
+      self.realUpdateSessionRules = chrome.declarativeNetRequest.updateSessionRules;
+      chrome.declarativeNetRequest.updateSessionRules = () => Promise.reject(new Error('Simulated quota error'));
+    });
+    try {
+      for (const card of ['#card-pdf', '#card-evil']) {
+        await gmail.bringToFront();
+        const tab = await newTabFrom(() => gmail.click(`${card} .aV3`));
+        const download = await tab.waitForEvent('download', { timeout: 10_000 });
+        await download.cancel();
+        assert.match(tab.url(), /opening\.html/, `${card} must not be displayed`);
+
+        // "Open again" on the placeholder page (shown after a few seconds) fails closed the same way.
+        await tab.evaluate(() => (document.getElementById('later').hidden = false));
+        const again = tab.waitForEvent('download', { timeout: 10_000 });
+        await tab.click('#reopen');
+        await (await again).cancel();
+        assert.match(tab.url(), /opening\.html/, `${card} must not be displayed on reopen`);
+      }
+      for (const page of context.pages()) assert.notEqual(await page.title(), 'PWNED');
+    } finally {
+      await worker.evaluate(() => {
+        chrome.declarativeNetRequest.updateSessionRules = self.realUpdateSessionRules;
+      });
+    }
+  });
+
   test('Alt-click keeps Gmail’s preview', async () => {
     await noNewTab(() => gmail.click('#card-pdf .aV3', { modifiers: ['Alt'] }));
     assert.ok((await gmailEvents()).includes('click:card-pdf'));
@@ -330,6 +358,30 @@ describe('Tabachment in Chromium', { skip: !hasOpenSsl() && 'openssl is needed t
     assert.equal((await shownFile(tab)).imageWidth, 20);
   });
 
+  test('injecting the script again (as after an update) leaves one working copy', async () => {
+    await worker.evaluate(async () => {
+      const [tab] = await chrome.tabs.query({ url: 'https://mail.google.com/*' });
+      const script = chrome.runtime.getManifest().content_scripts[0];
+      await chrome.scripting.insertCSS({ target: { tabId: tab.id }, files: script.css });
+      await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: script.js });
+    });
+    // The previous copy removed its buttons when it stopped; the new one adds them back.
+    await gmail.waitForSelector('#card-png .tabachment-open', { state: 'attached' });
+    const buttons = await gmail.$$eval('span.aZo', (cards) =>
+      cards.map((card) => card.querySelectorAll(':scope > .tabachment-open').length),
+    );
+    assert.ok(buttons.every((count) => count <= 1), JSON.stringify(buttons));
+
+    let opened = 0;
+    const count = () => opened++;
+    context.on('page', count);
+    await gmail.click('#card-png .aV3');
+    await gmail.waitForTimeout(1000);
+    context.off('page', count);
+    assert.equal(opened, 1);
+    assert.deepEqual(await gmailEvents(), []);
+  });
+
   test('Back returns to a page that can open the file again', async () => {
     const tab = await newTabFrom(() => gmail.click('#card-pdf .aV3'));
     const shown = await shownFile(tab);
@@ -355,6 +407,13 @@ describe('Tabachment in Chromium', { skip: !hasOpenSsl() && 'openssl is needed t
     await options.reload();
     assert.equal(await options.isChecked('[data-setting="openInBackground"]'), true);
     assert.equal(await options.isChecked('[data-kind="audio"]'), false);
+  });
+
+  // Runs last: covers every attachment request made by the tests above.
+  test('never asks Gmail for inline display', () => {
+    const attachmentRequests = server.requests.filter((request) => request.includes('view=att'));
+    assert.ok(attachmentRequests.length > 10);
+    assert.deepEqual(attachmentRequests.filter((request) => /[?&]disp=inline(&|$)/.test(request)), []);
   });
 });
 

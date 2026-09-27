@@ -24,7 +24,14 @@
 
   let settings = T.normalizeSettings();
   let scanQueued = false;
+  let stopped = false;
   const observer = new MutationObserver(scheduleScan);
+
+  // The script can be injected again into the same page: after an update, and
+  // at install time when Gmail was already open (see the service worker). The
+  // newest copy takes over and stops the previous one.
+  if (typeof globalThis.__tabachmentTeardown === 'function') globalThis.__tabachmentTeardown();
+  globalThis.__tabachmentTeardown = teardown;
 
   // --- Reading attachments from the page ------------------------------------
 
@@ -134,7 +141,9 @@
       declaredMime: attachment.declaredMime,
       background,
     };
-    const fallback = () => window.open(T.toInlineUrl(attachment.url), '_blank', 'noopener');
+    // If the service worker cannot be reached, fall back to Gmail's download
+    // link: without its rules nothing checks the file's type (fail closed).
+    const fallback = () => window.open(T.toDownloadUrl(attachment.url), '_blank', 'noopener');
     try {
       chrome.runtime.sendMessage(message).then((response) => {
         if (!response || !response.ok) console.warn('[Tabachment] Could not open the attachment:', response && response.error);
@@ -156,6 +165,7 @@
   }
 
   function scan() {
+    if (stopped) return;
     if (!extensionAlive()) return teardown();
     for (const card of document.querySelectorAll(CARD_SELECTOR)) syncCard(card);
   }
@@ -220,22 +230,31 @@
   }
 
   function teardown() {
+    stopped = true;
     observer.disconnect();
     for (const type of POINTER_EVENTS) window.removeEventListener(type, onPointerEvent, true);
     window.removeEventListener('keydown', onKeyDown, true);
+    try {
+      chrome.storage.onChanged.removeListener(onSettingsChanged);
+    } catch {
+      // The extension context is already gone.
+    }
     for (const button of document.querySelectorAll('.' + BUTTON_CLASS)) button.remove();
     for (const card of document.querySelectorAll('[' + CARD_ATTRIBUTE + ']')) card.removeAttribute(CARD_ATTRIBUTE);
+    if (globalThis.__tabachmentTeardown === teardown) delete globalThis.__tabachmentTeardown;
+  }
+
+  function onSettingsChanged(changes, area) {
+    if (area !== 'sync' || !changes.settings) return;
+    settings = T.normalizeSettings(changes.settings.newValue);
+    scheduleScan();
   }
 
   for (const type of POINTER_EVENTS) window.addEventListener(type, onPointerEvent, true);
   window.addEventListener('keydown', onKeyDown, true);
   observer.observe(document, { childList: true, subtree: true, attributes: true, attributeFilter: ['download_url', 'href'] });
 
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'sync' || !changes.settings) return;
-    settings = T.normalizeSettings(changes.settings.newValue);
-    scheduleScan();
-  });
+  chrome.storage.onChanged.addListener(onSettingsChanged);
   chrome.storage.sync.get('settings').then(
     (stored) => {
       settings = T.normalizeSettings(stored.settings);
