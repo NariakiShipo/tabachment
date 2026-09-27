@@ -83,6 +83,26 @@ describe('toDownloadUrl', () => {
       'https://mail.google.com/mail/?xdisp=1&view=att&attid=0.1&disp=safe',
     );
   });
+
+  test('leaves exactly one disp, whatever spelling the input used', () => {
+    const base = 'https://mail.google.com/mail/u/0/?view=att&attid=0.1';
+    for (const [input, expected] of [
+      [`${base}&%64isp=inline&zw`, `${base}&disp=safe&zw`],
+      [`${base}&disp=inline&permmsgid=msg-f:1&disp=inline&zw`, `${base}&disp=safe&permmsgid=msg-f:1&zw`],
+      [`${base}&d%69sp=inline&disp=safe&zw`, `${base}&disp=safe&zw`],
+    ]) {
+      const output = T.toDownloadUrl(input);
+      assert.equal(output, expected, input);
+      assert.deepEqual(new URL(output).searchParams.getAll('disp'), ['safe'], input);
+    }
+  });
+
+  test('only edits the query, never the fragment', () => {
+    assert.equal(
+      T.toDownloadUrl('https://mail.google.com/mail/u/0/?view=att&attid=0.1#x?disp=inline'),
+      'https://mail.google.com/mail/u/0/?view=att&attid=0.1&disp=safe#x?disp=inline',
+    );
+  });
 });
 
 describe('classify', () => {

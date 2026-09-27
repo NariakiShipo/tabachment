@@ -38,7 +38,7 @@
 
 1. **內容腳本**（`extension/src/content/gmail.js`）在 Gmail 頁面上辨識附件卡片與撰寫視窗中的附件連結，在 Gmail 自己的程式之前攔截點擊（capture 階段），只處理瀏覽器能直接顯示的格式。
 2. **Service worker**（`extension/src/background/service-worker.js`）開啟新分頁，先為**這個分頁**加上 `declarativeNetRequest` 工作階段規則，再讓分頁前往 Gmail 的**下載網址**（`disp=safe`）。Tabachment 從不要求 Gmail 以頁面方式顯示檔案。
-3. Gmail 原本以 `Content-Disposition: attachment` 回應，使 Chrome 下載檔案；規則把它改為 `inline`，Chrome 便在分頁中顯示檔案。規則**只在回應是被動格式時生效**（PDF、點陣圖片、影音、純文字），HTML、SVG 等可能執行程式的內容一律維持下載，不會被顯示；規則若無法建立，分頁也只是一般的 Gmail 下載（fail closed）。分頁關閉時規則即被移除。
+3. Gmail 原本以 `Content-Disposition: attachment` 回應，使 Chrome 下載檔案；規則把它改為 `inline`，Chrome 便在分頁中顯示檔案。規則**只在回應是被動格式時生效**（PDF、點陣圖片、影音、純文字），HTML、SVG 等可能執行程式的內容一律維持下載，不會被顯示。沒有經過這些規則的類型檢查，就不會顯示任何內容；分頁沒有規則時（例如規則無法建立），就只是一般的 Gmail 下載（fail closed）。分頁關閉時規則即被移除。
 4. 以 `application/octet-stream` 寄出的檔案會依副檔名修正為正確的類型；未宣告編碼的 UTF-8 文字由 `text-fix.js` 修正亂碼。
 
 ## 已知限制
@@ -89,7 +89,7 @@ PRIVACY.md                 隱私權政策
 
 **Tabachment** is a Chrome extension: click a PDF, image, text, video or audio attachment in Gmail and it opens right away in a new tab, displayed by Chrome itself, instead of Gmail's preview overlay or a download. Other formats keep Gmail's behavior; Alt-click (Option-click) also keeps it, and Ctrl/⌘-click or middle-click opens a background tab.
 
-How it works: a content script intercepts clicks on Gmail attachment cards and compose attachment links; the service worker opens a tab, adds `declarativeNetRequest` session rules scoped to that tab, then loads Gmail's download URL (`disp=safe`); it never asks Gmail for inline display. The rules turn `Content-Disposition: attachment` into `inline` only for passive formats (PDF, raster images, audio, video, plain text) and relabel `application/octet-stream` files by extension; HTML and other active content is never rendered, and if the rules cannot be added the tab is an ordinary Gmail download (fail closed). Rules are removed when the tab closes.
+How it works: a content script intercepts clicks on Gmail attachment cards and compose attachment links; the service worker opens a tab, adds `declarativeNetRequest` session rules scoped to that tab, then loads Gmail's download URL (`disp=safe`); it never asks Gmail for inline display. The rules turn `Content-Disposition: attachment` into `inline` only for passive formats (PDF, raster images, audio, video, plain text) and relabel `application/octet-stream` files by extension; HTML and other active content is never rendered: nothing is displayed without the tab's type-checked rules, and a tab without rules (for example, if they cannot be added) is an ordinary Gmail download (fail closed). Rules are removed when the tab closes.
 
 - Install for development: `chrome://extensions` › Developer mode › **Load unpacked** › select the `extension` folder (Chrome 128+).
 - Tests: `npm test` (unit), `npm run test:e2e` (loads the extension in Chromium against a fake Gmail served over HTTPS).
