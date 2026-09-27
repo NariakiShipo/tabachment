@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabachment</title>
+    <link rel="icon" href="/icons/icon32.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="opening">
+    <main class="panel">
+      <img class="logo" src="/icons/icon128.png" alt="" width="64" height="64" />
+      <h1 class="filename" id="filename"></h1>
+      <p class="status" id="status" role="status">
+        <span class="spinner" aria-hidden="true"></span>
+        <span data-i18n="openingStatus">Opening in this tab…</span>
+      </p>
+      <div class="later" id="later" hidden>
+        <p data-i18n="openingHint">
+          If the file did not appear, it may have been downloaded instead. Check your downloads, or open it again.
+        </p>
+        <button type="button" class="button" id="reopen" data-i18n="openingReopen">Open again</button>
+      </div>
+    </main>
+    <script src="i18n.js"></script>
+    <script src="opening.js"></script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "short_name": "Tabachment",
+  "description": "__MSG_extDescription__",
+  "version": "1.0.0",
+  "default_locale": "en",
+  "minimum_chrome_version": "128",
+  "homepage_url": "https://github.com/NariakiShipo/tabachment",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "__MSG_actionTitle__",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/pages/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "permissions": ["declarativeNetRequestWithHostAccess", "scripting", "storage"],
+  "host_permissions": ["https://mail.google.com/*", "https://mail-attachment.googleusercontent.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["src/shared/attachments.js", "src/content/gmail.js"],
+      "css": ["src/content/gmail.css"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://mail.google.com/*", "https://mail-attachment.googleusercontent.com/*"],
+      "js": ["src/content/text-fix.js"],
+      "run_at": "document_end"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "extName": {
+    "message": "Tabachment－在新标签页打开 Gmail 附件"
+  },
+  "extDescription": {
+    "message": "在 Gmail 中点击 PDF、图片、文本、视频或音频附件，即可直接在新标签页打开：不弹出预览窗口，也无需下载。"
+  },
+  "actionTitle": {
+    "message": "Tabachment 设置"
+  },
+  "cardButtonLabel": {
+    "message": "新标签页"
+  },
+  "cardButtonTitle": {
+    "message": "在新标签页中打开"
+  },
+  "openingStatus": {
+    "message": "正在此标签页中打开…"
+  },
+  "openingHint": {
+    "message": "如果文件没有显示，可能已改为下载。请查看浏览器的下载内容，或重新打开。"
+  },
+  "openingReopen": {
+    "message": "重新打开"
+  },
+  "optionsTitle": {
+    "message": "Tabachment 设置"
+  },
+  "optionsBehavior": {
+    "message": "点击附件时"
+  },
+  "optInterceptClicks": {
+    "message": "在新标签页中打开"
+  },
+  "optInterceptClicksHint": {
+    "message": "支持的文件会在新标签页中打开，而不是 Gmail 的预览窗口；其他文件保持 Gmail 原有的行为。"
+  },
+  "optOpenInBackground": {
+    "message": "在后台打开"
+  },
+  "optOpenInBackgroundHint": {
+    "message": "停留在 Gmail，文件会在旁边的标签页中打开。"
+  },
+  "optShowButton": {
+    "message": "在附件上显示“新标签页”按钮"
+  },
+  "optShowButtonHint": {
+    "message": "鼠标移到附件上时出现；即使关闭“在新标签页中打开”也能使用。"
+  },
+  "optionsKinds": {
+    "message": "文件类型"
+  },
+  "kindPdf": {
+    "message": "PDF 文档"
+  },
+  "kindImage": {
+    "message": "图片"
+  },
+  "kindImageHint": {
+    "message": "PNG、JPG、GIF、WebP、BMP、ICO、AVIF"
+  },
+  "kindText": {
+    "message": "文本文件"
+  },
+  "kindTextHint": {
+    "message": "TXT、CSV、JSON、Markdown、XML、日志和源代码"
+  },
+  "kindVideo": {
+    "message": "视频"
+  },
+  "kindVideoHint": {
+    "message": "MP4、WebM、MOV、OGV"
+  },
+  "kindAudio": {
+    "message": "音频"
+  },
+  "kindAudioHint": {
+    "message": "MP3、M4A、WAV、OGG、FLAC、AAC"
+  },
+  "kindOtherNote": {
+    "message": "其他文件（Word、Excel、PowerPoint、ZIP、HTML 等）继续使用 Gmail 的预览。"
+  },
+  "optionsTips": {
+    "message": "小技巧"
+  },
+  "tipAltClick": {
+    "message": "按住 Alt（Mac 上为 Option）再点击附件，即可使用 Gmail 原有的预览。"
+  },
+  "tipCtrlClick": {
+    "message": "按住 Ctrl（Mac 上为 ⌘）点击，或用鼠标中键点击，会在后台标签页中打开文件。"
+  },
+  "tipPdfDownload": {
+    "message": "如果 PDF 仍被下载，请前往 Chrome“设置 › 隐私和安全 › 网站设置 › 更多内容设置 › PDF 文档”，选择“在 Chrome 中打开 PDF”。"
+  },
+  "privacyNote": {
+    "message": "Tabachment 完全在你的浏览器中运行，不收集任何数据。"
+  },
+  "savedStatus": {
+    "message": "已保存"
+  }
+}

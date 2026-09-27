@@ -1,0 +1,60 @@
+/* Tabachment — "New tab" button shown on viewable Gmail attachment cards. */
+
+.tabachment-open {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  height: 26px;
+  margin: 0;
+  padding: 0 10px 0 8px;
+  border: 0;
+  border-radius: 13px;
+  background: rgba(32, 33, 36, 0.88);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font: 500 12px/1 "Google Sans", Roboto, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.tabachment-open svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+[data-tabachment]:hover > .tabachment-open,
+[data-tabachment]:focus-within > .tabachment-open,
+.tabachment-open:focus-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.tabachment-open:hover {
+  background: #1a73e8;
+}
+
+.tabachment-open:focus-visible {
+  outline: 2px solid #8ab4f8;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabachment-open {
+    transition: none;
+  }
+}
