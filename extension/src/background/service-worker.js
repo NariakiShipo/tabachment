@@ -61,20 +61,26 @@ async function openAttachment(message, sender) {
     opener,
   );
   await chrome.storage.session.set({ [RECORD_PREFIX + tab.id]: attachment });
+  // Let the placeholder page commit first so that Back always returns to it
+  // (it offers "Open again") instead of sometimes to nothing.
+  await loadAttachment(tab.id, attachment, waitForTabLoad(tab.id, 2000));
+}
+
+/**
+ * Adds the tab's display rules, then loads Gmail's download URL in the tab.
+ * Only those rules can turn the response into inline display; if they cannot
+ * be added, the load is an ordinary Gmail download (fail closed). The
+ * navigation is browser-initiated, so Gmail sees it exactly like a URL typed
+ * into the address bar.
+ */
+async function loadAttachment(tabId, attachment, ready = Promise.resolve()) {
   await Promise.all([
-    // Without the rules the navigation below is an ordinary Gmail download:
-    // nothing is ever displayed without their type checks (fail closed).
-    installRules(tab.id, attachment).catch((error) => {
+    installRules(tabId, attachment).catch((error) => {
       console.warn('[Tabachment] Could not add display rules; the file will download instead:', error);
     }),
-    // Let the placeholder page commit first so that Back always returns to it
-    // (it offers "Open again") instead of sometimes to nothing.
-    waitForTabLoad(tab.id, 2000),
+    ready,
   ]);
-  // attachment.url is Gmail's download URL; only the rules added above can
-  // turn its response into inline display. The navigation is browser-
-  // initiated, so Gmail sees it exactly like a URL typed into the address bar.
-  await chrome.tabs.update(tab.id, { url: attachment.url });
+  await chrome.tabs.update(tabId, { url: T.toDownloadUrl(attachment.url) });
 }
 
 function waitForTabLoad(tabId, timeout) {
@@ -115,8 +121,7 @@ async function reopenAttachment(sender) {
   const key = RECORD_PREFIX + tab.id;
   const attachment = (await chrome.storage.session.get(key))[key];
   if (!attachment) throw new Error('Nothing to reopen');
-  await installRules(tab.id, attachment);
-  await chrome.tabs.update(tab.id, { url: T.toDownloadUrl(attachment.url) });
+  await loadAttachment(tab.id, attachment);
 }
 
 // --- Session rules ------------------------------------------------------------

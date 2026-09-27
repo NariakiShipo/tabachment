@@ -253,6 +253,13 @@ describe('Tabachment in Chromium', { skip: !hasOpenSsl() && 'openssl is needed t
         const download = await tab.waitForEvent('download', { timeout: 10_000 });
         await download.cancel();
         assert.match(tab.url(), /opening\.html/, `${card} must not be displayed`);
+
+        // "Open again" on the placeholder page (shown after a few seconds) fails closed the same way.
+        await tab.evaluate(() => (document.getElementById('later').hidden = false));
+        const again = tab.waitForEvent('download', { timeout: 10_000 });
+        await tab.click('#reopen');
+        await (await again).cancel();
+        assert.match(tab.url(), /opening\.html/, `${card} must not be displayed on reopen`);
       }
       for (const page of context.pages()) assert.notEqual(await page.title(), 'PWNED');
     } finally {
