@@ -62,15 +62,17 @@ async function openAttachment(message, sender) {
   );
   await chrome.storage.session.set({ [RECORD_PREFIX + tab.id]: attachment });
   await Promise.all([
+    // Without the rules the navigation below is an ordinary Gmail download:
+    // nothing is ever displayed without their type checks (fail closed).
     installRules(tab.id, attachment).catch((error) => {
-      // Still open the file: Gmail's inline URL often displays without help.
-      console.warn('[Tabachment] Could not add display rules:', error);
+      console.warn('[Tabachment] Could not add display rules; the file will download instead:', error);
     }),
     // Let the placeholder page commit first so that Back always returns to it
     // (it offers "Open again") instead of sometimes to nothing.
     waitForTabLoad(tab.id, 2000),
   ]);
-  // Navigate only once the rules are in place. The navigation is browser-
+  // attachment.url is Gmail's download URL; only the rules added above can
+  // turn its response into inline display. The navigation is browser-
   // initiated, so Gmail sees it exactly like a URL typed into the address bar.
   await chrome.tabs.update(tab.id, { url: attachment.url });
 }
@@ -114,7 +116,7 @@ async function reopenAttachment(sender) {
   const attachment = (await chrome.storage.session.get(key))[key];
   if (!attachment) throw new Error('Nothing to reopen');
   await installRules(tab.id, attachment);
-  await chrome.tabs.update(tab.id, { url: attachment.url });
+  await chrome.tabs.update(tab.id, { url: T.toDownloadUrl(attachment.url) });
 }
 
 // --- Session rules ------------------------------------------------------------

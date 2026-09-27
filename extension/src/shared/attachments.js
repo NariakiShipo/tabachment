@@ -199,17 +199,20 @@
   }
 
   /**
-   * Asks Gmail for inline display (disp=inline) instead of a download (disp=safe).
+   * Returns Gmail's download URL for an attachment (disp=safe; Gmail's own card
+   * links use disp=inline). Tabachment always loads this URL, never asks Gmail
+   * for inline display: only its type-checked rules may turn the response into
+   * inline display, so anything they reject (or any failure) stays a download.
    * Edits the string rather than using URLSearchParams, which would re-encode
    * the rest of Gmail's query (e.g. "&zw" -> "&zw=").
    */
-  function toInlineUrl(value) {
+  function toDownloadUrl(value) {
     if (typeof value !== 'string') return value;
-    if (/[?&]disp=[^&#]*/.test(value)) return value.replace(/([?&])disp=[^&#]*/g, '$1disp=inline');
+    if (/[?&]disp=[^&#]*/.test(value)) return value.replace(/([?&])disp=[^&#]*/g, '$1disp=safe');
     const hash = value.indexOf('#');
     const base = hash === -1 ? value : value.slice(0, hash);
     const fragment = hash === -1 ? '' : value.slice(hash);
-    return base + (base.includes('?') ? '&' : '?') + 'disp=inline' + fragment;
+    return base + (base.includes('?') ? '&' : '?') + 'disp=safe' + fragment;
   }
 
   /** Cleans a file name read from page text, e.g. "notes.txt (12 K)" -> "notes.txt". */
@@ -317,7 +320,7 @@
     const name = cleanFilename(filename);
     const type = classify(name, declaredMime);
     if (!type) throw new Error('Unsupported file type');
-    return { url: toInlineUrl(url), filename: name, kind: type.kind, mime: type.mime };
+    return { url: toDownloadUrl(url), filename: name, kind: type.kind, mime: type.mime };
   }
 
   function normalizeSettings(raw) {
@@ -342,7 +345,7 @@
     classify,
     parseDownloadUrl,
     isGmailAttachmentUrl,
-    toInlineUrl,
+    toDownloadUrl,
     cleanFilename,
     contentDisposition,
     buildTabRules,
