@@ -13,7 +13,7 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,6 +31,15 @@ const ICONS = {
 };
 
 const LOCALES = ['en', 'zh_TW'];
+
+/** Waits for web fonts, images and CSS transitions before a screenshot. */
+async function settle(page) {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await Promise.all(Array.from(document.images, (image) => image.decode().catch(() => {})));
+  });
+  await page.waitForTimeout(400);
+}
 
 async function renderIcons(browser) {
   const svg = await fs.readFile(path.join(sourceDir, 'icon.svg'), 'utf8');
@@ -67,21 +76,27 @@ async function renderStoreImages() {
     try {
       const worker = context.serviceWorkers()[0] || (await context.waitForEvent('serviceworker'));
       const extensionId = new URL(worker.url()).host;
+      const page = await context.newPage();
+
+      // The real options page, embedded in screenshot 3.
+      const optionsShot = path.join(userDataDir, 'options.png');
+      await page.setViewportSize({ width: 720, height: 800 });
+      await page.goto(`chrome-extension://${extensionId}/src/pages/options.html`);
+      await settle(page);
+      await page.screenshot({ path: optionsShot, fullPage: true });
+
       const shots = [
         ['promo.html?size=small', 440, 280, `promo-small-440x280-${locale}.png`],
         ['promo.html?size=marquee', 1400, 560, `promo-marquee-1400x560-${locale}.png`],
         ['screenshot.html?scene=click', 1280, 800, `screenshot-1-click-${locale}.png`],
         ['screenshot.html?scene=formats', 1280, 800, `screenshot-2-formats-${locale}.png`],
-        [`chrome-extension://${extensionId}/src/pages/options.html`, 1280, 800, `screenshot-3-options-${locale}.png`],
+        [`screenshot.html?scene=options&shot=${encodeURIComponent(pathToFileURL(optionsShot))}`, 1280, 800, `screenshot-3-options-${locale}.png`],
       ];
-      const page = await context.newPage();
       for (const [source, width, height, name] of shots) {
+        const [file, query] = source.split('?');
         await page.setViewportSize({ width, height });
-        const url = source.startsWith('chrome-extension://')
-          ? source
-          : `file://${path.join(sourceDir, source.split('?')[0])}?${source.split('?')[1]}&lang=${locale}`;
-        await page.goto(url);
-        await page.evaluate(() => document.fonts.ready);
+        await page.goto(`${pathToFileURL(path.join(sourceDir, file))}?${query}&lang=${locale}`);
+        await settle(page);
         await page.screenshot({ path: path.join(storeDir, name) });
         console.log('wrote', path.join('store', 'images', name));
       }

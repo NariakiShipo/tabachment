@@ -1,0 +1,578 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tabachment screenshot</title>
+    <link rel="stylesheet" href="common.css" />
+    <style>
+      body {
+        padding: 56px 64px;
+        background: radial-gradient(circle at 12% 0%, #ffffff 0, transparent 45%),
+          linear-gradient(160deg, var(--indigo-50), var(--indigo-100));
+      }
+
+      h1 {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        text-align: center;
+      }
+
+      .sub {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .stage {
+        position: relative;
+        height: 560px;
+        margin-top: 44px;
+      }
+
+      /* --- scene: click ------------------------------------------------------------ */
+
+      .mail {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 572px;
+        height: 540px;
+      }
+
+      .message {
+        padding: 26px 30px;
+      }
+
+      .from {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #12a594;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .from .name {
+        font-weight: 700;
+      }
+
+      .from .when {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .subject {
+        margin: 20px 0 16px;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .lines {
+        display: grid;
+        gap: 10px;
+      }
+
+      .cards {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .card {
+        position: relative;
+        width: 162px;
+        height: 132px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f6f7fb;
+      }
+
+      .card.hover {
+        border-color: var(--indigo-600);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18);
+      }
+
+      .card .thumb {
+        position: absolute;
+        inset: 12px 30px 44px;
+        display: grid;
+        gap: 6px;
+        padding: 10px;
+        border-radius: 3px;
+        background: #fff;
+        align-content: start;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      .card .thumb .bar {
+        height: 5px;
+      }
+
+      .card .label {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 42px;
+        padding: 0 10px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .card .label .badge {
+        width: 24px;
+        height: 24px;
+        font-size: 8px;
+      }
+
+      .card .pill {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+      }
+
+      .cursor {
+        position: absolute;
+        top: 318px;
+        left: 142px;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+      }
+
+      .flow-arrow {
+        position: absolute;
+        top: 150px;
+        left: 566px;
+        color: var(--indigo-600);
+      }
+
+      .browser {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        width: 496px;
+        height: 500px;
+      }
+
+      .tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: 4px;
+        height: 42px;
+        padding: 0 12px;
+        background: #dfe1ea;
+      }
+
+      .tab {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 180px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 9px 9px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      .tab.active {
+        background: #fff;
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .tab .badge {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        font-size: 0;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        height: 42px;
+        padding: 0 16px;
+        background: #323639;
+        color: #e8eaed;
+        font-size: 13px;
+      }
+
+      .toolbar .count {
+        margin: 0 auto;
+      }
+
+      .toolbar svg {
+        margin-left: 6px;
+      }
+
+      .viewer {
+        height: 416px;
+        padding: 22px 60px 0;
+        overflow: hidden;
+        background: #525659;
+      }
+
+      .page {
+        display: grid;
+        gap: 12px;
+        height: 420px;
+        padding: 30px;
+        background: #fff;
+        align-content: start;
+      }
+
+      .chart {
+        display: flex;
+        align-items: flex-end;
+        gap: 14px;
+        height: 110px;
+        margin: 8px 0;
+        padding: 0 10px;
+        border-bottom: 2px solid var(--line);
+      }
+
+      .chart span {
+        width: 36px;
+        border-radius: 4px 4px 0 0;
+        background: var(--indigo-400);
+      }
+
+      /* --- scene: formats ---------------------------------------------------------- */
+
+      body.formats {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .format-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        margin-top: 48px;
+      }
+
+      .format {
+        display: grid;
+        grid-template-rows: 250px auto;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(30, 27, 75, 0.08), 0 12px 32px rgba(30, 27, 75, 0.12);
+      }
+
+      .format .preview {
+        position: relative;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: #f3f4f8;
+      }
+
+      .format .caption {
+        padding: 16px 18px 18px;
+      }
+
+      .format .caption strong {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 19px;
+      }
+
+      .format .caption .badge {
+        width: 22px;
+        height: 22px;
+        font-size: 0;
+      }
+
+      .format .caption p {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .mini-page {
+        display: grid;
+        gap: 7px;
+        width: 140px;
+        height: 190px;
+        padding: 16px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        align-content: start;
+      }
+
+      .mini-page .bar {
+        height: 6px;
+      }
+
+      .landscape {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(#8fd3fe, #d7f0ff 60%);
+      }
+
+      .csv {
+        width: 100%;
+        height: 100%;
+        padding: 22px 18px;
+        background: #fff;
+        font: 15px/1.7 "Noto Sans TC Variable", monospace;
+        white-space: pre;
+      }
+
+      .player {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #2b2d42, #1b1b2f);
+      }
+
+      .notes {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .note {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .note svg {
+        flex: none;
+        color: var(--indigo-600);
+      }
+
+      /* --- scene: options ------------------------------------------------------------ */
+
+      body.options {
+        display: flex;
+        align-items: center;
+        gap: 56px;
+      }
+
+      .options-copy {
+        flex: 1;
+      }
+
+      .options-copy h1 {
+        text-align: left;
+        font-size: 44px;
+      }
+
+      .points {
+        display: grid;
+        gap: 18px;
+        margin-top: 34px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .points li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 21px;
+        font-weight: 600;
+      }
+
+      .check {
+        display: grid;
+        flex: none;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--indigo-600);
+        color: #fff;
+      }
+
+      .privacy {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 40px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        background: #fff;
+        color: #0b7a53;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .options-window {
+        flex: none;
+        width: 640px;
+        height: 688px;
+      }
+
+      .options-window img {
+        display: block;
+        width: 640px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="strings.js"></script>
+    <script>
+      const scene = params.get('scene') || 'click';
+      const newTabIcon =
+        '<svg width="14" height="14" viewBox="0 0 24 24" stroke-width="2.4"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+      const checkIcon =
+        '<svg class="stroke-icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="3"><path d="M5 12.5 10 17.5 19 7.5"/></svg>';
+      const infoIcon =
+        '<svg class="stroke-icon" width="22" height="22" viewBox="0 0 24 24" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>';
+      const toolIcons = ['M12 4v11M7 10l5 5 5-5M5 20h14', 'M7 9V4h10v5M7 17H5v-7h14v7h-2M8 14h8v6H8z']
+        .map((d) => `<svg class="stroke-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2">${d.split('M').filter(Boolean).map((p) => `<path d="M${p}"/>`).join('')}</svg>`)
+        .join('');
+      const bars = (widths) => widths.map((w) => `<div class="bar" style="width:${w}%"></div>`).join('');
+
+      const scenes = {
+        click: () => `
+          <h1 data-t="clickTitle"></h1>
+          <p class="sub" data-t="clickSub"></p>
+          <div class="stage">
+            <div class="window mail">
+              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="address">mail.google.com</span></div>
+              <div class="message">
+                <div class="from"><span class="avatar" data-t="initial"></span><span class="name" data-t="sender"></span><span class="when">10:24</span></div>
+                <div class="subject" data-t="subject"></div>
+                <div class="lines">${bars([96, 88, 92, 54])}</div>
+                <div class="cards">
+                  <div class="card hover">
+                    <div class="thumb">${bars([70, 100, 100, 85, 100, 60])}</div>
+                    <span class="pill">${newTabIcon}<span data-t="newTab"></span></span>
+                    <div class="label"><span class="badge" style="background:var(--pdf)">PDF</span><span data-t="pdfName"></span></div>
+                  </div>
+                  <div class="card">
+                    <div class="thumb" style="background:linear-gradient(#8fd3fe,#c8f1d9)"></div>
+                    <div class="label"><span class="badge" style="background:var(--image)">JPG</span>photo.jpg</div>
+                  </div>
+                  <div class="card">
+                    <div class="thumb">${bars([100, 100, 100, 100, 100, 100])}</div>
+                    <div class="label"><span class="badge" style="background:var(--text)">CSV</span>data.csv</div>
+                  </div>
+                </div>
+              </div>
+              <svg class="cursor" width="30" height="36" viewBox="0 0 30 36"><path d="M3 2v26l7-6 5 11 5-2-5-11h9z" fill="#fff" stroke="#1c1b1f" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <svg class="flow-arrow stroke-icon" width="110" height="120" viewBox="0 0 110 120" stroke-width="7">
+              <path d="M12 104 C 18 50, 44 32, 92 32"/><path d="M76 16 L94 32 L76 48"/>
+            </svg>
+            <div class="window browser">
+              <div class="tabs">
+                <div class="tab"><span class="badge" style="background:#8a8d99"></span><span data-t="inbox"></span></div>
+                <div class="tab active"><span class="badge" style="background:var(--pdf)"></span><span data-t="pdfName"></span></div>
+              </div>
+              <div class="toolbar"><span data-t="pdfName"></span><span class="count">1 / 3</span><span>${toolIcons}</span></div>
+              <div class="viewer"><div class="page">
+                <div class="bar" style="width:55%;height:16px;background:#c7c9ff"></div>
+                ${bars([100, 94, 100, 72])}
+                <div class="chart"><span style="height:45%"></span><span style="height:70%"></span><span style="height:58%"></span><span style="height:92%;background:var(--indigo-600)"></span><span style="height:80%"></span></div>
+                ${bars([100, 86])}
+              </div></div>
+            </div>
+          </div>`,
+
+        formats: () => `
+          <h1 data-t="formatsTitle"></h1>
+          <p class="sub" data-t="formatsSub"></p>
+          <div class="format-grid">
+            <div class="format">
+              <div class="preview"><div class="mini-page">
+                <div class="bar" style="width:60%;height:9px;background:#fbc9ca"></div>${bars([100, 100, 90, 100, 70, 100, 85, 100, 60])}
+              </div></div>
+              <div class="caption"><strong><span class="badge" style="background:var(--pdf)"></span><span data-t="pdf"></span></strong><p>.pdf</p></div>
+            </div>
+            <div class="format">
+              <div class="preview"><div class="landscape">
+                <svg width="100%" height="100%" viewBox="0 0 200 250" preserveAspectRatio="xMidYMax slice">
+                  <circle cx="150" cy="70" r="22" fill="#ffd166"/>
+                  <path d="M0 250 L0 170 L55 110 L100 165 L135 130 L200 190 L200 250z" fill="#12a594"/>
+                  <path d="M0 250 L0 205 L70 160 L130 210 L200 180 L200 250z" fill="#0b7a6b"/>
+                </svg>
+              </div></div>
+              <div class="caption"><strong><span class="badge" style="background:var(--image)"></span><span data-t="images"></span></strong><p>PNG · JPG · GIF · WebP · BMP · AVIF</p></div>
+            </div>
+            <div class="format">
+              <div class="preview"><div class="csv">姓名,城市
+王小明,台北市
+陳美麗,高雄市
+林大同,台中市
+張雅婷,台南市</div></div>
+              <div class="caption"><strong><span class="badge" style="background:var(--text)"></span><span data-t="text"></span></strong><p data-t="textNote"></p></div>
+            </div>
+            <div class="format">
+              <div class="preview"><div class="player">
+                <svg width="100%" height="100%" viewBox="0 0 200 250">
+                  <circle cx="100" cy="112" r="30" fill="rgba(255,255,255,.18)"/><path d="M91 97 L117 112 L91 127z" fill="#fff"/>
+                  <rect x="18" y="212" width="164" height="5" rx="2.5" fill="rgba(255,255,255,.25)"/><rect x="18" y="212" width="70" height="5" rx="2.5" fill="#8e4ec6"/>
+                </svg>
+              </div></div>
+              <div class="caption"><strong><span class="badge" style="background:var(--video)"></span><span data-t="video"></span></strong><p>MP4 · WebM · MOV · OGV</p></div>
+            </div>
+            <div class="format">
+              <div class="preview">
+                <svg width="170" height="120" viewBox="0 0 170 120">
+                  ${[18, 34, 58, 40, 70, 90, 62, 44, 76, 52, 30, 60, 84, 46, 24, 38, 20].map((h, i) => `<rect x="${4 + i * 9.7}" y="${60 - h / 2}" width="5.5" height="${h}" rx="2.75" fill="${i < 7 ? '#f76b15' : '#fbc7a4'}"/>`).join('')}
+                </svg>
+              </div>
+              <div class="caption"><strong><span class="badge" style="background:var(--audio)"></span><span data-t="audio"></span></strong><p>MP3 · M4A · WAV · OGG · FLAC</p></div>
+            </div>
+          </div>
+          <div class="notes">
+            <span class="note">${infoIcon}<span data-t="otherFiles"></span></span>
+            <span class="note">${infoIcon}<span data-t="altClick"></span></span>
+            <span class="note">${infoIcon}<span data-t="ctrlClick"></span></span>
+          </div>`,
+
+        options: () => `
+          <div class="options-copy">
+            <h1 data-t="optionsTitle"></h1>
+            <ul class="points">${t.optionsPoints.map((p) => `<li><span class="check">${checkIcon}</span><span>${p}</span></li>`).join('')}</ul>
+            <div class="privacy">
+              <svg class="stroke-icon" width="22" height="22" viewBox="0 0 24 24" stroke-width="2.2"><path d="M12 3 5 6v6c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+              <span data-t="privacy"></span>
+            </div>
+          </div>
+          <div class="window options-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="address">Tabachment</span></div>
+            <img src="${params.get('shot')}" alt="">
+          </div>`,
+      };
+
+      document.body.className = scene;
+      document.body.innerHTML = scenes[scene]();
+      fillStrings();
+    </script>
+  </body>
+</html>
